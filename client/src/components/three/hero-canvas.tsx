@@ -27,7 +27,7 @@ export default function HeroCanvas() {
         opacity: 0.6
       });
 
-      const shapes: THREE.Mesh[] = [];
+      const shapes: any[] = [];
       for (let i = 0; i < 15; i++) {
         const shape = new THREE.Mesh(geometry, material);
         shape.position.set(
