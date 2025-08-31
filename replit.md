@@ -1,8 +1,21 @@
-# Portfolio Website
+# Kathi Prasanth - Portfolio Website
 
 ## Overview
 
-This is a modern full-stack portfolio website built with React/TypeScript frontend and Express.js backend. The application showcases a personal portfolio with interactive 3D elements, responsive design, and professional presentation of skills, projects, and contact information. The project uses a monorepo structure with shared TypeScript schemas and is configured for both development and production environments.
+This is an advanced full-stack portfolio website for Kathi Prasanth, a Full Stack Web Developer with B.Tech in Information Technology. The website showcases professional skills in Python, React, Node.js, HTML, CSS, JavaScript, and Machine Learning. Features separate pages with advanced animations, Three.js 3D elements, interactive movable objects, and a fully functional contact form with email notifications. The project uses a monorepo structure with shared TypeScript schemas and is configured for both development and production environments.
+
+## Recent Changes
+
+**August 31, 2025**
+- Created separate pages for About, Skills, Projects, and Contact with routing support
+- Implemented advanced Framer Motion animations throughout all pages
+- Added backend email service using Nodemailer for contact form submissions
+- Enhanced Three.js integration with interactive 3D elements on all pages
+- Updated navigation system to support multi-page routing with wouter
+- Created contact form API endpoint with automatic email notifications to both user and website owner
+- Added responsive design improvements and smooth page transitions
+- Implemented featured project showcase highlighting ML Phishing Detector
+- Enhanced skills section with animated progress bars and interactive cards
 
 ## User Preferences
 
@@ -32,6 +45,7 @@ Preferred communication style: Simple, everyday language.
 - Type-safe schema definitions with Zod validation
 - Database migration support through Drizzle Kit
 - Shared schema between client and server for type consistency
+- Contact messages storage with email notification system
 - User entity with username/password fields and UUID primary keys
 
 **Development Environment**
@@ -59,10 +73,10 @@ Preferred communication style: Simple, everyday language.
 - React ecosystem: React 18, React DOM, React Hook Form
 - UI Framework: Radix UI primitives for accessible components
 - 3D Graphics: Three.js with TypeScript definitions
-- Animation: Class Variance Authority for component variants
-- State Management: TanStack React Query
-- Routing: Wouter for lightweight client-side routing
-- Styling: Tailwind CSS with custom configuration
+- Animation: Framer Motion for advanced page transitions and interactions
+- State Management: TanStack React Query for server state management
+- Routing: Wouter for lightweight multi-page client-side routing
+- Styling: Tailwind CSS with warm color palette and dark theme
 - Date Handling: date-fns utility library
 
 **Development Tools**
@@ -70,6 +84,7 @@ Preferred communication style: Simple, everyday language.
 - TypeScript with strict configuration
 - ESLint and Prettier (implied by project structure)
 - Replit-specific plugins for development environment integration
+- Nodemailer for email functionality with Gmail SMTP integration
 
 **Build & Deployment**
 - Vite for frontend bundling and optimization
