@@ -80,32 +80,32 @@ export default function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="py-20 px-6 lg:px-8 bg-muted/20">
+    <section id="contact" className="py-20 px-6 lg:px-8 bg-muted/20" aria-labelledby="contact-heading">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <header className="text-center mb-16">
+          <h2 id="contact-heading" className="text-4xl md:text-5xl font-bold mb-4">
             Get In <span className="text-primary">Touch</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Let's collaborate on your next innovative project
           </p>
-        </div>
+        </header>
         <div className="grid lg:grid-cols-2 gap-12">
           <div className="space-y-8">
-            <div>
+            <article>
               <h3 className="text-2xl font-semibold mb-6 text-foreground">Let's Connect</h3>
               <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
                 I'm always excited to work on new projects and collaborate with innovative teams. 
                 Whether you have a project in mind or just want to chat about technology, feel free to reach out!
               </p>
-            </div>
-            <div className="space-y-6">
+            </article>
+            <address className="space-y-6 not-italic">
               {contactInfo.map((info) => {
                 const IconComponent = info.icon;
                 return (
                   <div key={info.title} className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                      <IconComponent className="w-6 h-6 text-primary" />
+                      <IconComponent className="w-6 h-6 text-primary" aria-hidden="true" />
                     </div>
                     <div>
                       <h4 className="font-medium text-foreground">{info.title}</h4>
@@ -114,10 +114,10 @@ export default function ContactSection() {
                   </div>
                 );
               })}
-            </div>
+            </address>
           </div>
           <div className="glass-effect rounded-2xl p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" role="form" aria-label="Contact form">
               <div>
                 <Label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                   Name

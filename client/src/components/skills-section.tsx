@@ -9,9 +9,9 @@ interface SkillBarProps {
 
 function SkillBar({ skill, percentage, highlighted = false }: SkillBarProps) {
   return (
-    <div className={`flex items-center justify-between mb-3 ${highlighted ? 'bg-primary/10 rounded-lg p-3 border border-primary/20' : ''}`}>
+    <div className={`flex items-center justify-between mb-3 ${highlighted ? 'bg-primary/10 rounded-lg p-3 border border-primary/20' : ''}`} role="listitem">
       <div className="flex items-center gap-2">
-        {highlighted && <Zap className="w-4 h-4 text-primary" />}
+        {highlighted && <Zap className="w-4 h-4 text-primary" aria-hidden="true" />}
         <span className={`text-sm ${highlighted ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
           {skill}
         </span>
@@ -20,6 +20,7 @@ function SkillBar({ skill, percentage, highlighted = false }: SkillBarProps) {
         <Progress 
           value={percentage} 
           className={`h-2 ${highlighted ? '[&>div]:bg-primary' : ''}`}
+          aria-label={`${skill} skill level: ${percentage}%`}
         />
       </div>
     </div>
@@ -34,13 +35,13 @@ interface SkillCardProps {
 
 function SkillCard({ icon: Icon, title, skills }: SkillCardProps) {
   return (
-    <div className="gradient-border rounded-xl">
+    <article className="gradient-border rounded-xl" role="listitem">
       <div className="bg-card rounded-xl p-8 h-full">
-        <div className="text-primary mb-4">
-          <Icon className="w-10 h-10 mx-auto" />
-        </div>
+        <header className="text-primary mb-4">
+          <Icon className="w-10 h-10 mx-auto" aria-hidden="true" />
+        </header>
         <h3 className="text-xl font-semibold mb-4 text-card-foreground">{title}</h3>
-        <div className="space-y-3">
+        <div className="space-y-3" role="list" aria-label={`${title} skills`}>
           {skills.map((skill) => (
             <SkillBar 
               key={skill.name} 
@@ -51,7 +52,7 @@ function SkillCard({ icon: Icon, title, skills }: SkillCardProps) {
           ))}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
@@ -91,17 +92,17 @@ export default function SkillsSection() {
   ];
 
   return (
-    <section id="skills" className="py-20 px-6 lg:px-8 bg-muted/20">
+    <section id="skills" className="py-20 px-6 lg:px-8 bg-muted/20" aria-labelledby="skills-heading">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <header className="text-center mb-16">
+          <h2 id="skills-heading" className="text-4xl md:text-5xl font-bold mb-4">
             Technical <span className="text-primary">Skills</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Proficient in modern web technologies and frameworks
           </p>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </header>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" role="list" aria-label="Technical skills categories">
           {skillCategories.map((category) => (
             <SkillCard
               key={category.title}

@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
+import SEOHead from "@/components/seo-head";
+import Analytics from "@/components/analytics";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Skills from "@/pages/skills";
@@ -37,6 +39,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <SEOHead />
+        <Analytics />
         <Toaster />
         <Router />
       </TooltipProvider>
