@@ -3,30 +3,37 @@ import Footer from "@/components/footer";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Palette, Settings, Bot, Wrench, Shield, Globe, Zap } from "lucide-react";
 
 interface SkillBarProps {
   skill: string;
   percentage: number;
   delay: number;
+  highlighted?: boolean;
 }
 
-function AnimatedSkillBar({ skill, percentage, delay }: SkillBarProps) {
+function AnimatedSkillBar({ skill, percentage, delay, highlighted = false }: SkillBarProps) {
   const [animated, setAnimated] = useState(false);
 
   return (
     <motion.div 
-      className="flex items-center justify-between mb-4"
+      className={`flex items-center justify-between mb-4 ${highlighted ? 'bg-primary/10 rounded-lg p-3 border border-primary/20' : ''}`}
       initial={{ opacity: 0, x: -50 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
       onAnimationComplete={() => setAnimated(true)}
     >
-      <span className="text-muted-foreground text-sm font-medium">{skill}</span>
+      <div className="flex items-center gap-2">
+        {highlighted && <Zap className="w-4 h-4 text-primary" />}
+        <span className={`text-sm font-medium ${highlighted ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+          {skill}
+        </span>
+      </div>
       <div className="w-24">
         <Progress 
           value={animated ? percentage : 0} 
-          className="h-2 transition-all duration-1000 ease-out" 
+          className={`h-2 transition-all duration-1000 ease-out ${highlighted ? '[&>div]:bg-primary' : ''}`}
         />
       </div>
     </motion.div>
@@ -34,13 +41,13 @@ function AnimatedSkillBar({ skill, percentage, delay }: SkillBarProps) {
 }
 
 interface SkillCardProps {
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   title: string;
-  skills: Array<{ name: string; level: number }>;
+  skills: Array<{ name: string; level: number; highlighted?: boolean }>;
   delay: number;
 }
 
-function SkillCard({ icon, title, skills, delay }: SkillCardProps) {
+function SkillCard({ icon: Icon, title, skills, delay }: SkillCardProps) {
   return (
     <motion.div 
       className="gradient-border rounded-xl"
@@ -52,11 +59,11 @@ function SkillCard({ icon, title, skills, delay }: SkillCardProps) {
     >
       <div className="bg-card rounded-xl p-8 h-full">
         <motion.div 
-          className="text-primary text-5xl mb-6 text-center"
+          className="text-primary mb-6 text-center"
           whileHover={{ scale: 1.2, rotate: 10 }}
           transition={{ duration: 0.3 }}
         >
-          {icon}
+          <Icon className="w-12 h-12 mx-auto" />
         </motion.div>
         <h3 className="text-xl font-semibold mb-6 text-card-foreground text-center">{title}</h3>
         <div className="space-y-3">
@@ -66,6 +73,7 @@ function SkillCard({ icon, title, skills, delay }: SkillCardProps) {
               skill={skill.name} 
               percentage={skill.level} 
               delay={delay + index * 0.1}
+              highlighted={skill.highlighted}
             />
           ))}
         </div>
@@ -77,9 +85,10 @@ function SkillCard({ icon, title, skills, delay }: SkillCardProps) {
 export default function Skills() {
   const skillCategories = [
     {
-      icon: "🎨",
+      icon: Palette,
       title: "Frontend Development",
       skills: [
+        { name: "Vibe Coding", level: 95, highlighted: true },
         { name: "React.js", level: 90 },
         { name: "HTML5", level: 95 },
         { name: "CSS3", level: 92 },
@@ -88,7 +97,7 @@ export default function Skills() {
       ],
     },
     {
-      icon: "⚙️",
+      icon: Settings,
       title: "Backend Development",
       skills: [
         { name: "Python", level: 92 },
@@ -99,7 +108,7 @@ export default function Skills() {
       ],
     },
     {
-      icon: "🤖",
+      icon: Bot,
       title: "Machine Learning",
       skills: [
         { name: "Python ML", level: 90 },
@@ -110,7 +119,7 @@ export default function Skills() {
       ],
     },
     {
-      icon: "🛠️",
+      icon: Wrench,
       title: "Tools & Technologies",
       skills: [
         { name: "Git", level: 92 },
@@ -121,7 +130,7 @@ export default function Skills() {
       ],
     },
     {
-      icon: "🔐",
+      icon: Shield,
       title: "Cybersecurity",
       skills: [
         { name: "Web Security", level: 88 },
@@ -132,7 +141,7 @@ export default function Skills() {
       ],
     },
     {
-      icon: "🌐",
+      icon: Globe,
       title: "Web Technologies",
       skills: [
         { name: "Responsive Design", level: 94 },

@@ -25,23 +25,47 @@ export default function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for your message! I'll get back to you soon.",
-    });
+      const result = await response.json();
 
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setIsSubmitting(false);
+      if (result.success) {
+        toast({
+          title: "Message Sent!",
+          description: result.message,
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast({
+          title: "Error",
+          description: result.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
     {
       icon: Mail,
       title: "Email",
-      value: "kathi.prasanth@email.com",
+      value: "prasanthkathi05@gmail.com",
     },
     {
       icon: Linkedin,
@@ -51,7 +75,7 @@ export default function ContactSection() {
     {
       icon: Github,
       title: "GitHub",
-      value: "github.com/kathi-prasanth",
+      value: "github.com/prasanth-2812",
     },
   ];
 

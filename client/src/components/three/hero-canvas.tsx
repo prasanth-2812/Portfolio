@@ -21,7 +21,7 @@ export default function HeroCanvas() {
       // Create floating geometric shapes
       const geometry = new THREE.IcosahedronGeometry(1, 0);
       const material = new THREE.MeshBasicMaterial({ 
-        color: 0xef4444, 
+  color: 0x8a2be2, 
         wireframe: true,
         transparent: true,
         opacity: 0.6

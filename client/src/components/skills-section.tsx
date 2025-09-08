@@ -1,36 +1,53 @@
 import { Progress } from "@/components/ui/progress";
+import { Palette, Settings, Bot, Zap } from "lucide-react";
 
 interface SkillBarProps {
   skill: string;
   percentage: number;
+  highlighted?: boolean;
 }
 
-function SkillBar({ skill, percentage }: SkillBarProps) {
+function SkillBar({ skill, percentage, highlighted = false }: SkillBarProps) {
   return (
-    <div className="flex items-center justify-between mb-3">
-      <span className="text-muted-foreground text-sm">{skill}</span>
+    <div className={`flex items-center justify-between mb-3 ${highlighted ? 'bg-primary/10 rounded-lg p-3 border border-primary/20' : ''}`}>
+      <div className="flex items-center gap-2">
+        {highlighted && <Zap className="w-4 h-4 text-primary" />}
+        <span className={`text-sm ${highlighted ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
+          {skill}
+        </span>
+      </div>
       <div className="w-20">
-        <Progress value={percentage} className="h-2" />
+        <Progress 
+          value={percentage} 
+          className={`h-2 ${highlighted ? '[&>div]:bg-primary' : ''}`}
+        />
       </div>
     </div>
   );
 }
 
 interface SkillCardProps {
-  icon: string;
+  icon: React.ComponentType<{ className?: string }>;
   title: string;
-  skills: Array<{ name: string; level: number }>;
+  skills: Array<{ name: string; level: number; highlighted?: boolean }>;
 }
 
-function SkillCard({ icon, title, skills }: SkillCardProps) {
+function SkillCard({ icon: Icon, title, skills }: SkillCardProps) {
   return (
     <div className="gradient-border rounded-xl">
       <div className="bg-card rounded-xl p-8 h-full">
-        <div className="text-primary text-4xl mb-4">{icon}</div>
+        <div className="text-primary mb-4">
+          <Icon className="w-10 h-10 mx-auto" />
+        </div>
         <h3 className="text-xl font-semibold mb-4 text-card-foreground">{title}</h3>
         <div className="space-y-3">
           {skills.map((skill) => (
-            <SkillBar key={skill.name} skill={skill.name} percentage={skill.level} />
+            <SkillBar 
+              key={skill.name} 
+              skill={skill.name} 
+              percentage={skill.level} 
+              highlighted={skill.highlighted}
+            />
           ))}
         </div>
       </div>
@@ -41,9 +58,10 @@ function SkillCard({ icon, title, skills }: SkillCardProps) {
 export default function SkillsSection() {
   const skillCategories = [
     {
-      icon: "🎨",
+      icon: Palette,
       title: "Frontend Development",
       skills: [
+        { name: "Vibe Coding", level: 95, highlighted: true },
         { name: "React.js", level: 90 },
         { name: "HTML5", level: 95 },
         { name: "CSS3", level: 92 },
@@ -51,7 +69,7 @@ export default function SkillsSection() {
       ],
     },
     {
-      icon: "⚙️",
+      icon: Settings,
       title: "Backend Development",
       skills: [
         { name: "Python", level: 92 },
@@ -61,7 +79,7 @@ export default function SkillsSection() {
       ],
     },
     {
-      icon: "🤖",
+      icon: Bot,
       title: "Machine Learning",
       skills: [
         { name: "Python ML", level: 90 },

@@ -42,8 +42,10 @@ export default function Navigation() {
     if (location === "/" && sectionId !== "home") {
       // If on home page, scroll to section
       scrollToSection(sectionId);
+    } else if (location !== path) {
+      // If navigating to a different page, scroll to top will be handled by useScrollToTop hook
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // Navigation will be handled by Link component
     setIsOpen(false);
   };
 

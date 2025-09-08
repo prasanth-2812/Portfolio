@@ -7,12 +7,24 @@ import { z } from "zod";
 
 // Email configuration
 const createTransporter = () => {
+  console.log('Email configuration:', {
+    user: process.env.EMAIL_USER ? 'Set' : 'Not set',
+    pass: process.env.EMAIL_PASS ? 'Set' : 'Not set'
+  });
+  
   return nodemailer.createTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    tls: {
+      ciphers: 'SSLv3',
+      rejectUnauthorized: false
+    }
   });
 };
 
@@ -26,6 +38,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const contact = await storage.createContact(validatedData);
       
       // Send email notifications if email credentials are configured
+      let emailSent = false;
+      let emailError = null;
+      
       if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
         const transporter = createTransporter();
         
@@ -63,15 +78,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
         
         try {
+          console.log('Attempting to send emails...');
+          
+          // Verify the connection first
+          await transporter.verify();
+          console.log('Email connection verified successfully');
+          
           await transporter.sendMail(ownerMailOptions);
+          console.log('Owner notification email sent successfully');
           await transporter.sendMail(userMailOptions);
-        } catch (emailError) {
+          console.log('User auto-reply email sent successfully');
+          emailSent = true;
+        } catch (emailError: any) {
           console.error('Email sending failed:', emailError);
-          // Continue without failing the request
+          console.error('Email error details:', {
+            message: emailError?.message || 'Unknown error',
+            code: emailError?.code || 'Unknown code',
+            response: emailError?.response || 'No response',
+            command: emailError?.command || 'No command',
+            responseCode: emailError?.responseCode || 'No response code'
+          });
+          console.error('Full error object:', JSON.stringify(emailError, null, 2));
+          emailError = emailError;
         }
+      } else {
+        console.log('Email credentials not configured, skipping email sending');
+        emailError = new Error('Email credentials not configured');
       }
       
-      res.json({ success: true, message: 'Message sent successfully!', contact });
+      // Return appropriate response based on email status
+      if (emailSent) {
+        res.json({ 
+          success: true, 
+          message: 'Message sent successfully! You will receive a confirmation email shortly.', 
+          contact,
+          emailSent: true
+        });
+      } else {
+        res.json({ 
+          success: false, 
+          message: 'Message received but email notification failed. Please try again or contact directly.', 
+          contact,
+          emailSent: false,
+          emailError: emailError?.message || 'Email sending failed'
+        });
+      }
     } catch (error) {
       console.error('Contact form error:', error);
       if (error instanceof z.ZodError) {
@@ -90,6 +141,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Get contacts error:', error);
       res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  });
+
+  // Test email configuration endpoint
+  app.get("/api/test-email", async (req, res) => {
+    try {
+      if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        return res.json({ 
+          success: false, 
+          message: 'Email credentials not configured',
+          configured: false
+        });
+      }
+
+      console.log('Testing email configuration...');
+      console.log('Email user:', process.env.EMAIL_USER);
+      console.log('Email pass length:', process.env.EMAIL_PASS?.length);
+
+      const transporter = createTransporter();
+      
+      // Test email
+      const testMailOptions = {
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        subject: 'Email Configuration Test',
+        html: `
+          <h2>Email Configuration Test</h2>
+          <p>This is a test email to verify that your email configuration is working correctly.</p>
+          <p>If you receive this email, your contact form emails should work properly.</p>
+          <p>Timestamp: ${new Date().toISOString()}</p>
+        `,
+      };
+
+      console.log('Verifying email connection...');
+      // Verify the connection first
+      await transporter.verify();
+      console.log('Email connection verified successfully');
+      
+      console.log('Sending test email...');
+      await transporter.sendMail(testMailOptions);
+      console.log('Test email sent successfully');
+      
+      res.json({ 
+        success: true, 
+        message: 'Test email sent successfully! Check your inbox.',
+        configured: true
+      });
+    } catch (error: any) {
+      console.error('Email test error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        code: error.code,
+        response: error.response,
+        command: error.command,
+        responseCode: error.responseCode
+      });
+      res.json({ 
+        success: false, 
+        message: `Email test failed: ${error.message}`,
+        configured: true,
+        error: error.message,
+        errorCode: error.code
+      });
     }
   });
 

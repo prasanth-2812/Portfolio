@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProjectCanvas from "@/components/three/project-canvas";
 import { motion } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Trophy } from "lucide-react";
+import { Link } from "wouter";
 
 interface ProjectCardProps {
   title: string;
@@ -158,8 +159,9 @@ export default function Projects() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  <div className="inline-block bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                    🏆 Featured Project
+                  <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <Trophy className="w-4 h-4" />
+                    Featured Project
                   </div>
                   <h2 className="text-4xl font-bold mb-6 text-foreground">{featuredProject.title}</h2>
                   <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
@@ -236,12 +238,14 @@ export default function Projects() {
                 These projects represent just a glimpse of what's possible. I'm always excited to work on 
                 new challenges and bring innovative ideas to life. Let's build something amazing together!
               </p>
-              <Button 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transform hover:scale-105"
-                data-testid="button-start-project"
-              >
-                Start a Project
-              </Button>
+              <Link href="/contact">
+                <Button 
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 transform hover:scale-105"
+                  data-testid="button-start-project"
+                >
+                  Start a Project
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>

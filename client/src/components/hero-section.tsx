@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { Link } from "wouter";
 import HeroCanvas from "@/components/three/hero-canvas";
 
 export default function HeroSection() {
@@ -20,20 +21,22 @@ export default function HeroSection() {
             B.Tech in Information Technology | Passionate about creating innovative web solutions with modern technologies including Python, React, Node.js, and Machine Learning
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 transform hover:scale-105"
-              data-testid="button-view-work"
-            >
-              View My Work
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="border border-primary text-primary px-8 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105"
-              data-testid="button-contact"
-            >
-              Get In Touch
-            </button>
+            <Link href="/projects">
+              <button
+                className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 transform hover:scale-105"
+                data-testid="button-view-work"
+              >
+                View My Work
+              </button>
+            </Link>
+            <Link href="/contact">
+              <button
+                className="border border-primary text-primary px-8 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105"
+                data-testid="button-contact"
+              >
+                Get In Touch
+              </button>
+            </Link>
           </div>
         </div>
       </div>

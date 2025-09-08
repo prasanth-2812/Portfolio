@@ -1,0 +1,798 @@
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kathi Prasanth - Full Stack Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                    chart: {
+                        "1": "var(--chart-1)",
+                        "2": "var(--chart-2)",
+                        "3": "var(--chart-3)",
+                        "4": "var(--chart-4)",
+                        "5": "var(--chart-5)",
+                    }
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                    mono: ["var(--font-mono)"],
+                }
+            },
+        }
+    };
+    </script>
+    <style>
+        :root {
+            --card: #101011;
+            --ring: hsl(221.74, 13.14%, 34.31%);
+            --input: #2b2b2b;
+            --muted: #404040;
+            --accent: hsl(0, 0%, 92.16%);
+            --border: #2b2b2b;
+            --radius: 0.4rem;
+            --shadow: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00), 0px 1px 2px -1px hsl(9, 75%, 61% / 0.00);
+            --chart-1: hsl(203.8863, 88.2845%, 53.1373%);
+            --chart-2: hsl(159.7826, 100%, 36.0784%);
+            --chart-3: hsl(42.0290, 92.8251%, 56.2745%);
+            --chart-4: hsl(147.1429, 78.5047%, 41.9608%);
+            --chart-5: hsl(341.4894, 75.2000%, 50.9804%);
+            --popover: hsl(45, 25%, 97%);
+            --primary: #f5f5f5;
+            --sidebar: hsl(45, 25%, 97%);
+            --spacing: 0.25rem;
+            --font-mono: Menlo, monospace;
+            --font-sans: 'Inter', sans-serif;
+            --secondary: #ebebeb;
+            --shadow-lg: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00), 0px 4px 6px -1px hsl(9, 75%, 61% / 0.00);
+            --shadow-md: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00), 0px 2px 4px -1px hsl(9, 75%, 61% / 0.00);
+            --shadow-sm: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00), 0px 1px 2px -1px hsl(9, 75%, 61% / 0.00);
+            --shadow-xl: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00), 0px 8px 10px -1px hsl(9, 75%, 61% / 0.00);
+            --shadow-xs: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00);
+            --background: #090909;
+            --font-serif: 'Inter', sans-serif;
+            --foreground: #ebebeb;
+            --shadow-2xl: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00);
+            --shadow-2xs: 0px 2px 0px 0px hsl(9, 75%, 61% / 0.00);
+            --destructive: hsl(356.3033, 90.5579%, 54.3137%);
+            --sidebar-ring: hsl(275, 91%, 54%);
+            --sidebar-accent: hsl(25, 45%, 80%);
+            --sidebar-border: hsl(45, 15%, 80%);
+            --card-foreground: hsl(0, 0%, 100%);
+            --sidebar-primary: hsl(275, 91%, 54%);
+            --tracking-normal: 0em;
+            --muted-foreground: #ababab;
+            --accent-foreground: hsl(0, 0%, 0%);
+            --popover-foreground: hsl(0, 0%, 100%);
+            --primary-foreground: #0d0d0d;
+            --sidebar-foreground: hsl(20, 14%, 17%);
+            --secondary-foreground: #0d0d0d;
+            --destructive-foreground: #ffffff;
+            --sidebar-accent-foreground: hsl(20, 14%, 17%);
+            --sidebar-primary-foreground: hsl(0, 0%, 100%);
+        }
+
+        .dark {
+            --card: hsl(20, 14%, 8%);
+            --ring: hsl(275, 91%, 54%);
+            --input: hsl(20, 14%, 18%);
+            --muted: hsl(20, 14%, 15%);
+            --accent: hsl(25, 45%, 20%);
+            --border: hsl(20, 14%, 15%);
+            --chart-1: hsl(203.8863, 88.2845%, 53.1373%);
+            --chart-2: hsl(159.7826, 100%, 36.0784%);
+            --chart-3: hsl(42.0290, 92.8251%, 56.2745%);
+            --chart-4: hsl(147.1429, 78.5047%, 41.9608%);
+            --chart-5: hsl(341.4894, 75.2000%, 50.9804%);
+            --popover: hsl(20, 14%, 4%);
+            --primary: hsl(275, 91%, 54%);
+            --sidebar: hsl(20, 14%, 8%);
+            --secondary: hsl(30, 15%, 52%);
+            --background: hsl(20, 14%, 4%);
+            --foreground: hsl(45, 25%, 91%);
+            --destructive: hsl(356.3033, 90.5579%, 54.3137%);
+            --sidebar-ring: hsl(275, 91%, 54%);
+            --sidebar-accent: hsl(25, 45%, 20%);
+            --sidebar-border: hsl(20, 14%, 15%);
+            --card-foreground: hsl(45, 25%, 85%);
+            --sidebar-primary: hsl(275, 91%, 54%);
+            --muted-foreground: hsl(45, 15%, 46%);
+            --accent-foreground: hsl(45, 25%, 85%);
+            --popover-foreground: hsl(45, 25%, 91%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --sidebar-foreground: hsl(45, 25%, 85%);
+            --secondary-foreground: hsl(0, 0%, 100%);
+            --destructive-foreground: hsl(0, 0%, 100%);
+            --sidebar-accent-foreground: hsl(45, 25%, 85%);
+            --sidebar-primary-foreground: hsl(0, 0%, 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .gradient-border {
+            background: linear-gradient(135deg, hsl(9, 75%, 61%), hsl(25, 45%, 20%));
+            padding: 1px;
+            border-radius: 0.5rem;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(16, 16, 17, 0.8);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .typing-animation {
+            border-right: 2px solid hsl(275, 91%, 54%);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-right-color: hsl(275, 91%, 54%); }
+            51%, 100% { border-right-color: transparent; }
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen">
+    <!-- Navigation -->
+    <!-- @COMPONENT: Navigation [fixed header with smooth scroll links] -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-primary">KP</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-foreground hover:text-primary transition-colors duration-300 px-3 py-2 text-sm font-medium">Home</a>
+                        <a href="#about" class="text-muted-foreground hover:text-primary transition-colors duration-300 px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#skills" class="text-muted-foreground hover:text-primary transition-colors duration-300 px-3 py-2 text-sm font-medium">Skills</a>
+                        <a href="#projects" class="text-muted-foreground hover:text-primary transition-colors duration-300 px-3 py-2 text-sm font-medium">Projects</a>
+                        <a href="#contact" class="text-muted-foreground hover:text-primary transition-colors duration-300 px-3 py-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" class="text-foreground hover:text-primary focus:outline-none focus:text-primary">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- Hero Section -->
+    <!-- @COMPONENT: HeroSection [main landing with 3D canvas and introduction] -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-6 lg:px-8">
+            <div class="floating-animation">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    Hi, I'm <span class="text-primary">Kathi Prasanth</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-muted-foreground mb-8 typing-animation">
+                    Full Stack Web Developer
+                </p>
+                <p class="text-lg text-secondary mb-12 max-w-2xl mx-auto leading-relaxed">
+                    B.Tech in Information Technology | Passionate about creating innovative web solutions with modern technologies including Python, React, Node.js, and Machine Learning
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#projects" class="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 transform hover:scale-105">
+                        View My Work
+                    </a>
+                    <a href="#contact" class="border border-primary text-primary px-8 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- About Section -->
+    <!-- @COMPONENT: AboutSection [profile information and education] -->
+    <section id="about" class="py-20 px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">About <span class="text-primary">Me</span></h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Driven by innovation and passionate about technology
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-primary">Professional Profile</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                            <span class="text-foreground">Full Stack Web Developer with expertise in modern technologies</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                            <span class="text-foreground">B.Tech in Information Technology</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                            <span class="text-foreground">Specialized in Machine Learning and Web Development</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-primary rounded-full"></div>
+                            <span class="text-foreground">Passionate about creating secure and innovative solutions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid gap-6">
+                    <div class="bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-colors duration-300">
+                        <h4 class="text-xl font-semibold mb-3 text-primary">Education</h4>
+                        <p class="text-card-foreground mb-2">Bachelor of Technology</p>
+                        <p class="text-muted-foreground">Information Technology</p>
+                    </div>
+                    <div class="bg-card border border-border rounded-xl p-6 hover:border-primary/50 transition-colors duration-300">
+                        <h4 class="text-xl font-semibold mb-3 text-primary">Specialization</h4>
+                        <p class="text-card-foreground mb-2">Full Stack Development</p>
+                        <p class="text-muted-foreground">Machine Learning & Web Security</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: AboutSection -->
+
+    <!-- Skills Section -->
+    <!-- @COMPONENT: SkillsSection [technical skills grid with interactive elements] -->
+    <section id="skills" class="py-20 px-6 lg:px-8 bg-muted/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Technical <span class="text-primary">Skills</span></h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Proficient in modern web technologies and frameworks
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Frontend Skills -->
+                <div class="gradient-border rounded-xl">
+                    <div class="bg-card rounded-xl p-8 h-full">
+                        <div class="text-primary text-4xl mb-4">🎨</div>
+                        <h3 class="text-xl font-semibold mb-4 text-card-foreground">Frontend Development</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">React.js</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[90%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">HTML5</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[95%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">CSS3</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[92%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">JavaScript</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[88%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Backend Skills -->
+                <div class="gradient-border rounded-xl">
+                    <div class="bg-card rounded-xl p-8 h-full">
+                        <div class="text-primary text-4xl mb-4">⚙️</div>
+                        <h3 class="text-xl font-semibold mb-4 text-card-foreground">Backend Development</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Python</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[92%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Node.js</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[85%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Flask</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[88%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">APIs</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[87%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Machine Learning -->
+                <div class="gradient-border rounded-xl">
+                    <div class="bg-card rounded-xl p-8 h-full">
+                        <div class="text-primary text-4xl mb-4">🤖</div>
+                        <h3 class="text-xl font-semibold mb-4 text-card-foreground">Machine Learning</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Python ML</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[90%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Data Analysis</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[85%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Security</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[88%]"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-muted-foreground">Three.js</span>
+                                <div class="w-20 bg-muted rounded-full h-2">
+                                    <div class="bg-primary rounded-full h-2 w-[82%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: SkillsSection -->
+
+    <!-- Projects Section -->
+    <!-- @COMPONENT: ProjectsSection [interactive project showcase] -->
+    <section id="projects" class="py-20 px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Featured <span class="text-primary">Projects</span></h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Innovative solutions showcasing full-stack development and machine learning expertise
+                </p>
+            </div>
+            
+            <!-- Featured Project - ML Phishing Detector -->
+            <div class="mb-16">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1">
+                        <div class="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium mb-4">
+                            Featured Project
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 text-foreground">ML Phishing Detector</h3>
+                        <p class="text-muted-foreground mb-6 text-lg leading-relaxed">
+                            An advanced machine learning application that detects phishing websites using sophisticated algorithms. 
+                            Built with Python Flask backend and responsive HTML/CSS frontend, this project demonstrates the 
+                            intersection of cybersecurity and modern web development.
+                        </p>
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <span class="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm">Python</span>
+                            <span class="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm">Flask</span>
+                            <span class="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm">Machine Learning</span>
+                            <span class="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm">HTML</span>
+                            <span class="bg-accent text-accent-foreground px-3 py-1 rounded-lg text-sm">CSS</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 transform hover:scale-105">
+                                View Project
+                            </a>
+                            <a href="#" class="border border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                                View Code
+                            </a>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <!-- A modern cybersecurity interface with code editor showing machine learning algorithms -->
+                        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-accent/20 p-1">
+                            <div class="bg-card rounded-xl p-8 h-80 flex items-center justify-center">
+                                <canvas id="project-canvas-1" class="w-full h-full rounded-lg"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Projects Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 2 -->
+                <div class="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 transform hover:scale-105">
+                    <div class="h-48 bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center">
+                        <canvas id="project-canvas-2" class="w-full h-full"></canvas>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-card-foreground">React Portfolio Dashboard</h4>
+                        <p class="text-muted-foreground mb-4">
+                            Interactive dashboard built with React and modern UI components, featuring real-time data visualization.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">React</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">JavaScript</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">CSS</span>
+                        </div>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">View Project →</a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 transform hover:scale-105">
+                    <div class="h-48 bg-gradient-to-br from-secondary/30 to-primary/30 flex items-center justify-center">
+                        <canvas id="project-canvas-3" class="w-full h-full"></canvas>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-card-foreground">Node.js API Server</h4>
+                        <p class="text-muted-foreground mb-4">
+                            RESTful API server with authentication, built using Node.js and modern backend technologies.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">Node.js</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">Express</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">API</span>
+                        </div>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">View Project →</a>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 transform hover:scale-105">
+                    <div class="h-48 bg-gradient-to-br from-accent/30 to-secondary/30 flex items-center justify-center">
+                        <canvas id="project-canvas-4" class="w-full h-full"></canvas>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-3 text-card-foreground">3D Web Experience</h4>
+                        <p class="text-muted-foreground mb-4">
+                            Immersive 3D web application using Three.js with interactive objects and smooth animations.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">Three.js</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">WebGL</span>
+                            <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">JavaScript</span>
+                        </div>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">View Project →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ProjectsSection -->
+
+    <!-- Contact Section -->
+    <!-- @COMPONENT: ContactSection [contact form and information] -->
+    <section id="contact" class="py-20 px-6 lg:px-8 bg-muted/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Get In <span class="text-primary">Touch</span></h2>
+                <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+                    Let's collaborate on your next innovative project
+                </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 text-foreground">Let's Connect</h3>
+                        <p class="text-muted-foreground mb-8 text-lg leading-relaxed">
+                            I'm always excited to work on new projects and collaborate with innovative teams. 
+                            Whether you have a project in mind or just want to chat about technology, feel free to reach out!
+                        </p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-foreground">Email</h4>
+                                <p class="text-muted-foreground" data-mock="true">kathi.prasanth@email.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-foreground">LinkedIn</h4>
+                                <p class="text-muted-foreground" data-mock="true">linkedin.com/in/kathi-prasanth</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-foreground">GitHub</h4>
+                                <p class="text-muted-foreground" data-mock="true">github.com/kathi-prasanth</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-2xl p-8">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-foreground mb-2">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" class="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder-muted-foreground" data-implementation="Should validate and handle form submission">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-foreground mb-2">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" class="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder-muted-foreground" data-implementation="Should validate email format">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-foreground mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="Project Collaboration" class="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder-muted-foreground">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-foreground mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." class="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-foreground placeholder-muted-foreground resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-primary-foreground py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 transform hover:scale-105" data-event="click:handleFormSubmit">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ContactSection -->
+
+    <!-- Footer -->
+    <!-- @COMPONENT: Footer [simple footer with copyright] -->
+    <footer class="py-8 px-6 lg:px-8 border-t border-border">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-muted-foreground">
+                © 2024 Kathi Prasanth. Built with passion for innovation and technology.
+            </p>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // Three.js Scene Setup and Animations
+        (function() {
+            // Hero Canvas Setup
+            const heroCanvas = document.getElementById('hero-canvas');
+            const heroScene = new THREE.Scene();
+            const heroCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const heroRenderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true });
+            
+            heroRenderer.setSize(window.innerWidth, window.innerHeight);
+            heroRenderer.setClearColor(0x000000, 0);
+
+            // Create floating geometric shapes
+            const geometry = new THREE.IcosahedronGeometry(1, 0);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0xef4444, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const shapes = [];
+            for (let i = 0; i < 15; i++) {
+                const shape = new THREE.Mesh(geometry, material);
+                shape.position.set(
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20
+                );
+                shape.rotation.set(
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI,
+                    Math.random() * Math.PI
+                );
+                heroScene.add(shape);
+                shapes.push(shape);
+            }
+
+            heroCamera.position.z = 10;
+
+            // Animation loop for hero
+            function animateHero() {
+                requestAnimationFrame(animateHero);
+                
+                shapes.forEach((shape, index) => {
+                    shape.rotation.x += 0.005;
+                    shape.rotation.y += 0.005;
+                    shape.position.y += Math.sin(Date.now() * 0.001 + index) * 0.01;
+                });
+
+                heroRenderer.render(heroScene, heroCamera);
+            }
+            animateHero();
+
+            // Project Canvas Setups
+            function setupProjectCanvas(canvasId, color) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+                
+                renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+                renderer.setClearColor(0x000000, 0);
+
+                const geometry = new THREE.BoxGeometry(1, 1, 1);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: color,
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.8
+                });
+
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+                camera.position.z = 3;
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
+            }
+
+            // Setup project canvases
+            setupProjectCanvas('project-canvas-1', 0xef4444);
+            setupProjectCanvas('project-canvas-2', 0x10b981);
+            setupProjectCanvas('project-canvas-3', 0x3b82f6);
+            setupProjectCanvas('project-canvas-4', 0xf59e0b);
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                heroCamera.aspect = window.innerWidth / window.innerHeight;
+                heroCamera.updateProjectionMatrix();
+                heroRenderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Active navigation highlighting
+            window.addEventListener('scroll', () => {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinks = document.querySelectorAll('nav a[href^="#"]');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-primary');
+                    link.classList.add('text-muted-foreground');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.remove('text-muted-foreground');
+                        link.classList.add('text-primary');
+                    }
+                });
+            });
+
+            // Form submission handler (placeholder)
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // TODO: Implement form submission logic
+                    alert('Thank you for your message! I\'ll get back to you soon.');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

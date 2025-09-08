@@ -21,16 +21,52 @@ export default function Contact() {
   const { toast } = useToast();
 
   const contactMutation = useMutation({
-    mutationFn: (data: typeof formData) => 
-      apiRequest("/api/contact", "POST", data),
-    onSuccess: () => {
-      toast({
-        title: "Message Sent!",
-        description: "Thank you for your message! I'll get back to you soon.",
-      });
-      setFormData({ name: "", email: "", subject: "", message: "" });
+    mutationFn: async (data: typeof formData) => {
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+      } catch (error: any) {
+        console.error("Contact form error:", error);
+        throw new Error(error.message || "Failed to send message. Please try again.");
+      }
+    },
+    onSuccess: (data: any) => {
+      console.log("Form submission response:", data);
+      
+      if (data.success && data.emailSent) {
+        toast({
+          title: "Message Sent Successfully!",
+          description: "Thank you for your message! You will receive a confirmation email shortly.",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else if (data.success && !data.emailSent) {
+        toast({
+          title: "Message Received",
+          description: "Your message was received but email notification failed. I'll still get back to you soon.",
+          variant: "destructive",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
     },
     onError: (error: any) => {
+      console.error("Contact form submission error:", error);
       toast({
         title: "Error",
         description: error.message || "Failed to send message. Please try again.",
@@ -46,6 +82,31 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("Form submission started with data:", formData);
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log("Form validation passed, submitting...");
     contactMutation.mutate(formData);
   };
 
@@ -53,8 +114,8 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Email",
-      value: "kathi.prasanth@email.com",
-      href: "mailto:kathi.prasanth@email.com",
+      value: "prasanthkathi05@gmail.com",
+      href: "prasanthkathi05@gmail.com",
     },
     {
       icon: Linkedin,
@@ -65,14 +126,14 @@ export default function Contact() {
     {
       icon: Github,
       title: "GitHub",
-      value: "github.com/kathi-prasanth",
-      href: "https://github.com/kathi-prasanth",
+      value: "github.com/prasanth-2812",
+      href: "https://github.com/prasanth-2812",
     },
     {
       icon: Phone,
       title: "Phone",
-      value: "+91 98765 43210",
-      href: "tel:+919876543210",
+      value: "+91 9652824932",
+      href: "tel:+919652824932",
     },
     {
       icon: MapPin,
